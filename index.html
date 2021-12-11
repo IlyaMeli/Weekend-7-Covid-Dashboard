@@ -8,18 +8,26 @@
     <title>Codiv Dashboard</title>
   </head>
   <body>
-    <h1>Covic Dashboard</h1>
-    <div class="graph-container">
-    </div>
-    <div class="country-stats"></div>
-    <div class="button-container">
-      <button type="button" class="europe">Europe</button>
-      <button type="button" class="asia">Asia</button>
-      <button type="button" class="africa">Africa</button>
-      <button type="button" class="americas">Americas</button>
-    </div>
-    <div class="counties-container">
+    <div class="wrapper">
+      <h1>Covic Dashboard</h1>
+      <div class="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
+      <div class="graph-container">
+        <canvas id="myChart"></canvas>
+      </div>
+      <div class="country-stats"></div>
+      <div class="button-container">
+        <button type="button" class="europe">Europe</button>
+        <button type="button" class="asia">Asia</button>
+        <button type="button" class="africa">Africa</button>
+        <button type="button" class="americas">Americas</button>
+      </div>
+      <div class="counties-container"></div>
     </div>
   </body>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.2/chart.min.js"></script>
   <script src="index.js"></script>
 </html>
