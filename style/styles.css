@@ -187,8 +187,14 @@ button:hover {
 }
 
 @media (max-width: 900px) {
+  h1 {
+    font-size: 35px;
+  }
   body {
     height: 120vh;
+  }
+  .graph-container {
+    height: 50%;
   }
 }
 @media (max-width: 600px) {
