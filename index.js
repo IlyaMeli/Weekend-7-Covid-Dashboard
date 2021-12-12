@@ -44,6 +44,7 @@ const getCountriesByRegion = async (region) => {
     );
     const data = await result.json();
     //getting each cca2 => will use in COVID fetch
+
     data.forEach((country) => {
       let countryName = country.name.common;
       let countryCode = country.cca2;
@@ -51,9 +52,8 @@ const getCountriesByRegion = async (region) => {
       createCountriesDiv(worldArrays[region], region);
       world[region][countryName] = {};
       getCovidData(countryCode, region, countryName);
-      covidChart.destroy();
-      drawChart(confirmedCovid, worldArrays[region]);
     });
+
     regionBtn.disabled = false;
     isLoading(false);
     loadingStat = false;
@@ -82,7 +82,6 @@ const getCovidData = async (countryCode, region, countryName) => {
         recovered,
         critical
       );
-
       newWorldObject[region].push(data);
       confirmedCovid.push(confirmed);
       totalDeathCovid.push(deaths);
@@ -158,22 +157,6 @@ countiesContainer.addEventListener("click", (e) => {
   }
 });
 
-function addData(chart, label, data) {
-  chart.data.labels.push(label);
-  chart.data.datasets.forEach((dataset) => {
-    dataset.data.push(data);
-  });
-  chart.update();
-}
-
-function removeData(chart) {
-  chart.data.labels.pop();
-  chart.data.datasets.forEach((dataset) => {
-    dataset.data.pop();
-  });
-  chart.update();
-}
-
 //function for button status >
 let changeChartData = (label) => {
   statusContainer.addEventListener("click", (e) => {
@@ -232,8 +215,6 @@ function buildWorldObj(
   world[region][country]["newDeaths"] = newDeaths;
   world[region][country]["totalRecovered"] = totalRecovered;
   world[region][country]["inCritical"] = inCritical;
-  // confirmedCovid.push(totalCases);
-  // totalDeathCovid.push(totalDeaths);
 }
 
 const drawChart = (covidData, countyLables) => {
@@ -252,6 +233,9 @@ const drawChart = (covidData, countyLables) => {
 
     options: {
       maintainAspectRatio: false,
+      animation: {
+        duration: 0,
+      },
     },
   });
 };
