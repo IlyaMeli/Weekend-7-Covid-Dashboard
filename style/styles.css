@@ -16,7 +16,7 @@ body {
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  padding: 50px;
+  padding: 5px 50px;
 }
 h1 {
   font-size: 60px;
