@@ -51,6 +51,8 @@ h1 {
   height: 10%;
   font-weight: 600;
   transition: 0.2s;
+  margin: 50px;
+  padding: 30px;
 }
 .counties-container::-webkit-scrollbar {
   width: 10px;
@@ -163,6 +165,26 @@ button:hover {
     opacity: 0;
   }
 }
+.landscape {
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 55px;
+  background-color: rgb(255, 187, 187);
+}
 
-@media (min-width: 768px) {
+@media (max-width: 900px) {
+  body {
+    height: 150vh;
+  }
+}
+@media (max-width: 600px) {
+  .wrapper {
+    display: none;
+  }
+  .landscape {
+    display: flex;
+  }
 }
