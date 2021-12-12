@@ -4,14 +4,19 @@ const countryStatsContainer = document.querySelector(".country-stats");
 const loading = document.querySelector(".lds-ripple");
 const graph = document.getElementById("myChart").getContext("2d");
 let covidChart = new Chart(graph, {});
-
-// const countryBtn = document.querySelectorAll(".country-btn");
 let loadingStat = "state";
 
 let confirmedCovid = [];
 let totalDeathCovid = [];
 let recoveredCovid = [];
 let criticalCovid = [];
+
+const newWorldObject = {
+  asia: [],
+  europe: [],
+  africa: [],
+  americas: [],
+};
 
 const worldArrays = {
   asia: [],
@@ -45,6 +50,8 @@ const getCountriesByRegion = async (region) => {
       createCountriesDiv(worldArrays[region], region);
       world[region][countryName] = {};
       getCovidData(countryCode, region, countryName);
+      covidChart.destroy();
+      drawChart(confirmedCovid, worldArrays[region]);
     });
     regionBtn.disabled = false;
     isLoading(false);
@@ -74,10 +81,15 @@ const getCovidData = async (countryCode, region, countryName) => {
         recovered,
         critical
       );
+
+      newWorldObject[region].push(data);
       confirmedCovid.push(confirmed);
-      covidChart.destroy();
-      drawChart(confirmedCovid, worldArrays[region]);
+      totalDeathCovid.push(deaths);
+      recoveredCovid.push(recovered);
+      criticalCovid.push(critical);
     }
+    covidChart.destroy();
+    drawChart(confirmedCovid, worldArrays[region]);
   } catch (error) {
     console.log(error);
   }
@@ -90,6 +102,14 @@ const isLoading = (state) => {
   } else {
     loading.style.display = "none";
   }
+};
+
+//create confirmed
+const createConfirm = (region) => {
+  confirmedCovid = region.map((e) => e.data.latest_data.confirmed);
+  totalDeathCovid = region.map((e) => e.data.latest_data.deaths);
+  recoveredCovid = region.map((e) => e.data.latest_data.recovered);
+  criticalCovid = region.map((e) => e.data.latest_data.critical);
 };
 
 //function that fills the worldArray with countries
@@ -145,6 +165,7 @@ buttonContainer.addEventListener("click", (e) => {
   countryStatsContainer.innerHTML = "";
   if (e.target.className !== "button-container") {
     let region = e.target.className;
+    createConfirm(newWorldObject[region]);
     createCountriesDiv(worldArrays[region], region);
     covidChart.destroy();
     drawChart(confirmedCovid, worldArrays[region]);
@@ -174,6 +195,8 @@ function buildWorldObj(
   world[region][country]["newDeaths"] = newDeaths;
   world[region][country]["totalRecovered"] = totalRecovered;
   world[region][country]["inCritical"] = inCritical;
+  // confirmedCovid.push(totalCases);
+  // totalDeathCovid.push(totalDeaths);
 }
 
 const drawChart = (covidData, countyLables) => {
