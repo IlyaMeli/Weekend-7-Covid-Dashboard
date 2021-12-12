@@ -1,4 +1,5 @@
 const buttonContainer = document.querySelector(".button-container");
+const statusContainer = document.querySelector(".status-container");
 const countiesContainer = document.querySelector(".counties-container");
 const countryStatsContainer = document.querySelector(".country-stats");
 const loading = document.querySelector(".lds-ripple");
@@ -157,8 +158,43 @@ countiesContainer.addEventListener("click", (e) => {
   }
 });
 
-//reset array
-const resetArr = (arr) => (arr = []);
+function addData(chart, label, data) {
+  chart.data.labels.push(label);
+  chart.data.datasets.forEach((dataset) => {
+    dataset.data.push(data);
+  });
+  chart.update();
+}
+
+function removeData(chart) {
+  chart.data.labels.pop();
+  chart.data.datasets.forEach((dataset) => {
+    dataset.data.pop();
+  });
+  chart.update();
+}
+
+//function for button status >
+let changeChartData = (label) => {
+  statusContainer.addEventListener("click", (e) => {
+    if (e.target.className === "confirmed") {
+      covidChart.destroy();
+      drawChart(confirmedCovid, worldArrays[label]);
+    }
+    if (e.target.className === "deaths") {
+      covidChart.destroy();
+      drawChart(totalDeathCovid, worldArrays[label]);
+    }
+    if (e.target.className === "recovered") {
+      covidChart.destroy();
+      drawChart(recoveredCovid, worldArrays[label]);
+    }
+    if (e.target.className === "critical") {
+      covidChart.destroy();
+      drawChart(criticalCovid, worldArrays[label]);
+    }
+  });
+};
 
 //event listeners for region change =>
 buttonContainer.addEventListener("click", (e) => {
@@ -169,6 +205,7 @@ buttonContainer.addEventListener("click", (e) => {
     createCountriesDiv(worldArrays[region], region);
     covidChart.destroy();
     drawChart(confirmedCovid, worldArrays[region]);
+    changeChartData(region);
     if (e.target.type === "button") {
       if (Object.keys(world[region]).length === 0) {
         getCountriesByRegion(region);
